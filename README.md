@@ -1,1 +1,0 @@
-# syngenta_screens
