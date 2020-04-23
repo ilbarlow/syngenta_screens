@@ -65,14 +65,14 @@ if __name__ == '__main__':
         print('Collating manual metadata files: {},'.format(sourceplates_file)
               + '\n' '{}'.format(wormsorter_file))
 
-#        plate_metadata = populate_96WPs(wormsorter_file,
-#                                        del_if_exists=False)
-#        robot_metadata = merge_robot_metadata(sourceplates_file,
-#                                              del_if_exists=False)
-        plate_file = list(day.rglob("*plate_metadata.csv"))[0]
-        plate_metadata = pd.read_csv(plate_file)
-        robot_file = list(day.rglob("*robot_metadata.csv"))[0]
-        robot_metadata = pd.read_csv(robot_file)
+        plate_metadata = populate_96WPs(wormsorter_file,
+                                        del_if_exists=False)
+        robot_metadata = merge_robot_metadata(sourceplates_file,
+                                              del_if_exists=False)
+        # plate_file = list(day.rglob("*plate_metadata.csv"))[0]
+        # plate_metadata = pd.read_csv(plate_file)
+        # robot_file = list(day.rglob("*robot_metadata.csv"))[0]
+        # robot_metadata = pd.read_csv(robot_file)
 
         concat_metadata = merge_robot_wormsorter(day,
                                                  robot_metadata,

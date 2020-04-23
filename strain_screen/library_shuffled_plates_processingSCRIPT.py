@@ -65,8 +65,7 @@ if __name__ == '__main__':
         robot_metadata.sort_values(by=['source_plate_number', 'destination_well'],
                                    ignore_index=True,
                                    inplace=True)
-        robot_metadata.drop(columns='imaging_plate_id',
-                            inplace=True)
+
         robot_metadata['shuffled_plate_id'] = [r.source_plate_id +
                                                '_sh%02d' %(r.robot_run_number)
                                                for i, r in
