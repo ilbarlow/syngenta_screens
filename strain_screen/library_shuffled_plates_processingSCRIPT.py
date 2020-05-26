@@ -31,6 +31,7 @@ AUXILIARY_FILES = Path('/Users/ibarlow/' +
 PREPROCESSING_REQUIRED = False
 sourceplate_files = list(
             AUXILIARY_FILES.rglob('2020SygentaLibrary3doses*'))
+sourceplate_files = [i for i in sourceplate_files if 'shuffled' not in str(i)]
 
 if __name__ == '__main__':
     if PREPROCESSING_REQUIRED == True:
@@ -61,8 +62,10 @@ if __name__ == '__main__':
         robot_metadata = merge_robot_metadata(file,
                                               saveto=None,
                                               del_if_exists=True,
-                                              compact_drug_plate=True)
-        robot_metadata.sort_values(by=['source_plate_number', 'destination_well'],
+                                              compact_drug_plate=True,
+                                              drug_by_column=False)
+        robot_metadata.sort_values(by=['source_plate_number',
+                                       'destination_well'],
                                    ignore_index=True,
                                    inplace=True)
 
@@ -70,6 +73,7 @@ if __name__ == '__main__':
                                                '_sh%02d' %(r.robot_run_number)
                                                for i, r in
                                                robot_metadata.iterrows()]
+        robot_metadata['is_bad_well'].fillna(False, inplace=True)
         robot_metadata.to_csv(str(file).replace('.csv', '_shuffled.csv'),
                               index=False)
         del robot_metadata

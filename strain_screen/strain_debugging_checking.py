@@ -1,32 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Tue Apr  7 14:09:23 2020
+Created on Thu May 14 10:10:12 2020
 
 @author: ibarlow
 
-Script for making the day metadata for the January Syngenta screen of 100
-drugs at 3 doses on 12 strains
 
-Parent directory (Auxiliary Files) contains individual folders for each
-day of experiments, and contains the following files:
-    YYYYMMDD_manual_metadata.csv (DD = day of tracking (d))
-    YYYYMMDD_wormsorter.csv (DD = day of tracking)
-    YYYMMDD_robot_bad_imaging_wells.csv (DD = d-1)
-    
-    A folder called sourceplates containing the shuffled sourceplates
-
-
-The following files will be generated: Nb. may be a good idea to put robot,
-plate and merged metadata into a separate folder within AuxiliaryFiles
-    YYYYMMDD_plate_metadata.csv:
-        this is generated from the wormsorter files
-    YYYYMMDD_day_metadata.csv:
-        compiled metadata from all the UI .csv files
-    
-    metadata.csv - final concatenated metadata of all the days combined
-
-
+Debugging of strain screen metadata
 """
 
 import pandas as pd
@@ -38,7 +18,7 @@ import re
 
 date_regex = r"\d{8}"
 plate_id_regex= r""
-PROJECT_DIRECTORY = Path('/Volumes/behavgenom$/Ida/Data/Hydra/SyngentaStrainScreen/AuxiliaryFiles')
+PROJECT_DIRECTORY = Path('/Users/ibarlow/OneDrive - Imperial College London/Documents/behavgenom_copy/strain_screen_bug_tests/AuxiliaryFiles')
 
 # import the shuffled plates as a reference
 sourceplates = list(PROJECT_DIRECTORY.rglob('*shuffled.csv'))
@@ -66,6 +46,7 @@ if __name__=='__main__':
         bad_wells_file = list(day.rglob('*_robot_bad_imaging_wells.csv'))[0]
         assert (exp_date in str(bad_wells_file))
         
+        
         print('Collating wormsorter files: {}'.format(wormsorter_file))
         
         plate_metadata = populate_96WPs(wormsorter_file,
@@ -80,7 +61,7 @@ if __name__=='__main__':
                                   how='outer')
         plate_metadata['is_bad_well'].fillna(False,
                                              inplace=True)
-        metadata_file = day / '{}_day_metadata.csv'.format(exp_date)
+        metadata_file = day / '{}_day_metadata_test.csv'.format(exp_date)
     
         print('Generating day metadata: {}'.format(
                 metadata_file))
@@ -114,6 +95,7 @@ if __name__=='__main__':
         files_to_check = day_metadata_check(day_metadata, day, plate_size=48)
         number_wells_per_plate(day_metadata, day)
         
+ 
         day_metadata.to_csv(metadata_file, index=False)
     
     # %%concatenate day metadata
